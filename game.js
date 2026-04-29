@@ -1,9 +1,14 @@
-class Demo1 extends AdventureScene {
+class room1 extends AdventureScene {
     constructor() {
-        super("demo1", "First Room");
+        super("room1", "Ahh the Co-op, it's the earthly clay beckons you...");
+    }
+    preload() {
+        this.load.image('room1', 'assets/co-op.jpeg');
     }
 
     onEnter() {
+        this.add.image(0, 0, 'room1').setOrigin(0).setDisplaySize(this.w * 0.75, this.h);
+
 
         let clip = this.add.text(this.w * 0.3, this.w * 0.3, "📎 paperclip")
             .setFontSize(this.s * 2)
@@ -54,16 +59,16 @@ class Demo1 extends AdventureScene {
                     this.loseItem("key");
                     this.showMessage("*squeak*");
                     door.setText("🚪 unlocked door");
-                    this.gotoScene('demo2');
+                    this.gotoScene('co-op');
                 }
             })
 
     }
 }
 
-class Demo2 extends AdventureScene {
+class CoOp extends AdventureScene {
     constructor() {
-        super("demo2", "The second room has a long name (it truly does).");
+        super("co-op", "This is where the magic happens. You can go back to the start screen, but can you find the way forward?");
     }
     onEnter() {
         this.add.text(this.w * 0.3, this.w * 0.4, "just go back")
@@ -73,7 +78,7 @@ class Demo2 extends AdventureScene {
                 this.showMessage("You've got no other choice, really.");
             })
             .on('pointerdown', () => {
-                this.gotoScene('demo1');
+                this.gotoScene('startscreen');
             });
 
         let finish = this.add.text(this.w * 0.6, this.w * 0.2, '(finish the game)')
@@ -96,12 +101,17 @@ class Intro extends Phaser.Scene {
     constructor() {
         super('intro')
     }
+    preload () {
+        this.load.image('intro','assets/start screen.jpeg');
+    }
     create() {
-        this.add.text(50,50, "Adventure awaits!").setFontSize(50);
-        this.add.text(50,100, "Click anywhere to begin.").setFontSize(20);
+        this.add.image(0, 0, 'intro').setOrigin(0).setDisplaySize(this.sys.game.config.width, this.sys.game.config.height);
+
+        this.add.text(100,100, "Your buddy god offering awaits to be made!").setFontSize(50);
+        this.add.text(100,200, "Click anywhere to begin.").setFontSize(20);
         this.input.on('pointerdown', () => {
             this.cameras.main.fade(1000, 0,0,0);
-            this.time.delayedCall(1000, () => this.scene.start('demo1'));
+            this.time.delayedCall(1000, () => this.scene.start('room1'));
         });
     }
 }
@@ -125,7 +135,7 @@ const game = new Phaser.Game({
         width: 1920,
         height: 1080
     },
-    scene: [Intro, Demo1, Demo2, Outro],
+    scene: [Intro, room1, CoOp, Outro],
     title: "Adventure Game",
 });
 
