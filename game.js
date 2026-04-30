@@ -3,60 +3,48 @@ class room1 extends AdventureScene {
         super("room1", "Ahh the Co-op, it's the earthly clay beckons you...");
     }
     preload() {
+        this.load.audio('music', 'assets/Aeris.mp3');
         this.load.image('room1', 'assets/co-op.jpeg');
     }
 
     onEnter() {
+        this.sound.play('music', { loop: true }); 
         this.add.image(0, 0, 'room1').setOrigin(0).setDisplaySize(this.w * 0.75, this.h);
 
 
-        let clip = this.add.text(this.w * 0.3, this.w * 0.3, "📎 paperclip")
-            .setFontSize(this.s * 2)
-            .setInteractive()
-            .on('pointerover', () => this.showMessage("Metal, bent."))
-            .on('pointerdown', () => {
-                this.showMessage("No touching!");
-                this.tweens.add({
-                    targets: clip,
-                    x: '+=' + this.s,
-                    repeat: 2,
-                    yoyo: true,
-                    ease: 'Sine.inOut',
-                    duration: 100
-                });
-            });
 
-        let key = this.add.text(this.w * 0.5, this.w * 0.1, "🔑 key")
+
+        let id = this.add.text(this.w * 0.1, this.w * 0.48, "🔑 student id")
             .setFontSize(this.s * 2)
             .setInteractive()
             .on('pointerover', () => {
-                this.showMessage("It's a nice key.")
+                this.showMessage("It's your student ID. You've been looking for it all over.");
             })
             .on('pointerdown', () => {
-                this.showMessage("You pick up the key.");
-                this.gainItem('key');
+                this.showMessage("You pick up the student ID.");
+                this.gainItem('studentID');
                 this.tweens.add({
-                    targets: key,
+                    targets: id,
                     y: `-=${2 * this.s}`,
                     alpha: { from: 1, to: 0 },
                     duration: 500,
-                    onComplete: () => key.destroy()
+                    onComplete: () => id.destroy()
                 });
             })
 
-        let door = this.add.text(this.w * 0.1, this.w * 0.15, "🚪 locked door")
+        let door = this.add.text(this.w * 0.63, this.w * 0.29, "🚪 locked door")
             .setFontSize(this.s * 2)
             .setInteractive()
             .on('pointerover', () => {
-                if (this.hasItem("key")) {
-                    this.showMessage("You've got the key for this door.");
+                if (this.hasItem("studentID")) {
+                    this.showMessage("You've got the student ID for this door.");
                 } else {
-                    this.showMessage("It's locked. Can you find a key?");
+                    this.showMessage("It's locked. Were you able to find your student ID?");
                 }
             })
             .on('pointerdown', () => {
-                if (this.hasItem("key")) {
-                    this.loseItem("key");
+                if (this.hasItem("studentID")) {
+                    this.loseItem("studentID");
                     this.showMessage("*squeak*");
                     door.setText("🚪 unlocked door");
                     this.gotoScene('co-op');
@@ -68,9 +56,16 @@ class room1 extends AdventureScene {
 
 class CoOp extends AdventureScene {
     constructor() {
-        super("co-op", "This is where the magic happens. You can go back to the start screen, but can you find the way forward?");
+        super("co-op", "Time to begin your journey, but can you find the way forward?");
+    }
+    preload() {
+        this.load.audio('music', 'assets/Aeris.mp3');
+
+
     }
     onEnter() {
+        this.sound.play('music', { loop: true });
+
         this.add.text(this.w * 0.3, this.w * 0.4, "just go back")
             .setFontSize(this.s * 2)
             .setInteractive()
@@ -78,22 +73,172 @@ class CoOp extends AdventureScene {
                 this.showMessage("You've got no other choice, really.");
             })
             .on('pointerdown', () => {
-                this.gotoScene('startscreen');
+                this.gotoScene('room1');
             });
 
-        let finish = this.add.text(this.w * 0.6, this.w * 0.2, '(finish the game)')
+        let wheel = this.add.text(this.w * 0.5, this.w * 0.5, "🔄 use the wheel")
+            .setInteractive()
+            .setFontSize(this.s * 2)
+            .on('pointerover', () => {
+                if (this.hasItem("clay")) {
+                    this.showMessage("You have the clay, maybe you can use it on the wheel.");
+                } else {
+                    this.showMessage("The wheel looks like it could be used to make something, but you don't have anything to use on it.");
+                }
+            })
+            .on('pointerdown', () => {
+                this.gotoScene('wheel');
+            });
+            
+        this.add.text(this.w * 0.2, this.h * 0.48, "clay")
+            .setFontSize(this.s * 2)
             .setInteractive()
             .on('pointerover', () => {
-                this.showMessage('*giggles*');
-                this.tweens.add({
-                    targets: finish,
-                    x: this.s + (this.h - 2 * this.s) * Math.random(),
-                    y: this.s + (this.h - 2 * this.s) * Math.random(),
-                    ease: 'Sine.inOut',
-                    duration: 500
-                });
+                this.showMessage("I should go get some clay first.");
             })
-            .on('pointerdown', () => this.gotoScene('outro'));
+            .on('pointerdown', () => {
+                this.gotoScene('clayPiece');
+            });
+
+        this.add.text(this.w * 0.6, this.h * 0.68, "tools")
+            .setFontSize(this.s * 1.5)
+            .setInteractive()
+            .on('pointerover', () => {
+                this.showMessage("These look like they could help me make a piece.");
+            })
+            .on('pointerdown', () => {
+                this.gotoScene('tools');
+                });
+            };
+
+        //let finish = this.add.text(this.w * 0.6, this.w * 0.2, '(finish the game)')
+           // .setInteractive()
+            //.on('pointerover', () => {
+              //  this.showMessage('*giggles*');
+                //this.tweens.add({
+                  //  targets: finish,
+                    //x: this.s + (this.h - 2 * this.s) * Math.random(),
+                    //y: this.s + (this.h - 2 * this.s) * Math.random(),
+                    //ease: 'Sine.inOut',
+                    //duration: 500
+                //});
+            //})
+            //.on('pointerdown', () => this.gotoScene('outro'));
+    }
+
+class clayPiece extends AdventureScene {
+    constructor() {
+        super("clayPiece", "Time to wedge this darn clay!");
+    }
+    preload () {
+        this.load.audio('music', 'assets/Aeris.mp3');
+        this.load.image('clayPiece', 'assets/clay.jpeg');
+    }
+    onEnter () {
+        this.sound.play('music', { loop: true });
+        this.add.image(0, 0, 'clayPiece').setOrigin(0).setDisplaySize(this.w * 0.75, this.h);
+        let clay = this.add.text(this.w * 0.4, this.w * 0.4, "wedge clay")
+            .setInteractive()
+            .setFontSize(this.s * 2)
+            .on('pointerover', () => {
+                this.showMessage("You wedged the clay, it's ready to be used on the wheel.");
+            })
+            .on('pointerdown', () => {
+                this.gainItem('clay');
+                this.tweens.add({
+                    targets: clay,
+                    y: `-=${2 * this.s}`,
+                    alpha: { from: 1, to: 0 },
+                    duration: 500,
+                    onComplete: () => clay.destroy()
+                });
+            });
+
+        let back = this.add.text(this.w * 0.1, this.w * 0.1, "go back")
+            .setInteractive()
+            .setFontSize(this.s * 2)
+            .on('pointerover', () => {
+                this.showMessage("Go back to the previous room.");
+            })
+            .on('pointerdown', () => {
+                this.gotoScene('co-op');
+            });
+    }
+}
+
+
+class tools extends AdventureScene {
+    constructor() {
+        super("tools", "These tools look like they could be useful?");
+    }
+    preload () {
+        this.load.audio('music', 'assets/Aeris.mp3');
+        this.load.image('tools', 'assets/tool.jpeg');
+    }
+    onEnter() {
+        this.sound.play('music', { loop: true });
+        this.add.image(0, 0, 'tools').setOrigin(0).setDisplaySize(this.w * 0.75, this.h);
+        let toolsText = this.add.text(this.w * 0.4, this.w * 0.4, "pick up tools")
+            .setInteractive()
+            .setFontSize(this.s * 2)
+            .on('pointerover', () => {
+                this.showMessage("You pick up the tools, maybe you can use them to make something on the wheel.");
+            })
+            .on('pointerdown', () => {
+                this.gainItem('tools');
+                this.tweens.add({
+                    targets: toolsText,
+                    y: `-=${2 * this.s}`,
+                    alpha: { from: 1, to: 0 },
+                    duration: 500,
+                    onComplete: () => toolsText.destroy()
+                });
+            });
+
+
+        let back = this.add.text(this.w * 0.1, this.w * 0.1, "go back")
+            .setInteractive()
+            .setFontSize(this.s * 2)
+            .on('pointerover', () => {
+                this.showMessage("Go back to the previous room.");
+            })
+            .on('pointerdown', () => {
+                this.gotoScene('co-op');
+            });
+    }
+}
+
+
+class wheel extends AdventureScene {
+    constructor() {
+        super("wheel", "You made it to the wheel, but can you make something out of the clay?");
+    }
+    preload () {
+        this.load.audio('music', 'assets/Aeris.mp3');
+        this.load.image('wheel','assets/wheel.jpeg');
+    }
+    onEnter() {
+        this.sound.play('music', { loop: true });
+        this.add.image(0, 0, 'wheel').setOrigin(0).setDisplaySize(this.w * 0.75, this.h);
+        let wheel = this.add.text(this.w * 0.5, this.w * 0.5, "🔄 the wheel")
+            .setInteractive()
+            .setFontSize(this.s * 2)
+            .on('pointerover', () => {
+                if (this.hasItem("clay") ) {
+                    this.showMessage("You're all set to use the wheel.");
+                } else {
+                    this.showMessage("I think you're missing something.");
+                }
+            });
+        let goBack = this.add.text(this.w * 0.3, this.w * 0.2, "go back")
+            .setInteractive()
+            .setFontSize(this.s * 2)
+            .on('pointerover', () => {
+                this.showMessage("Go back to the previous room.");
+            })
+            .on('pointerdown', () => {
+                this.gotoScene('co-op');
+            });
     }
 }
 
@@ -103,12 +248,14 @@ class Intro extends Phaser.Scene {
     }
     preload () {
         this.load.image('intro','assets/start screen.jpeg');
+        this.load.audio('music', 'assets/Aeris.mp3');
     }
     create() {
+        this.sound.play('music', { loop: true });
         this.add.image(0, 0, 'intro').setOrigin(0).setDisplaySize(this.sys.game.config.width, this.sys.game.config.height);
-
-        this.add.text(100,100, "Your buddy god offering awaits to be made!").setFontSize(50);
-        this.add.text(100,200, "Click anywhere to begin.").setFontSize(20);
+        const boldText = this.add.text(810,100, "Handheld!").setFontSize(60);
+        this.add.text(300,200, "Your buddy god offering awaits to be made!").setFontSize(50);
+        this.add.text(100,800, "Click anywhere to begin.").setFontSize(20);
         this.input.on('pointerdown', () => {
             this.cameras.main.fade(1000, 0,0,0);
             this.time.delayedCall(1000, () => this.scene.start('room1'));
@@ -135,7 +282,7 @@ const game = new Phaser.Game({
         width: 1920,
         height: 1080
     },
-    scene: [Intro, room1, CoOp, Outro],
+    scene: [Intro, room1, CoOp, tools, wheel, clayPiece, Outro],
     title: "Adventure Game",
 });
 
