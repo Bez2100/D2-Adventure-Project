@@ -3,18 +3,16 @@ class room1 extends AdventureScene {
         super("room1", "Ahh the Co-op, it's the earthly clay beckons you...");
     }
     preload() {
-        this.load.audio('music', 'assets/Aeris.mp3');
         this.load.image('room1', 'assets/co-op.jpeg');
     }
 
     onEnter() {
-        this.sound.play('music', { loop: true }); 
         this.add.image(0, 0, 'room1').setOrigin(0).setDisplaySize(this.w * 0.75, this.h);
 
 
 
 
-        let id = this.add.text(this.w * 0.1, this.w * 0.48, "🔑 student id")
+        let id = this.add.text(this.w * 0.1, this.w * 0.48, "student ID")
             .setFontSize(this.s * 2)
             .setInteractive()
             .on('pointerover', () => {
@@ -32,7 +30,7 @@ class room1 extends AdventureScene {
                 });
             })
 
-        let door = this.add.text(this.w * 0.63, this.w * 0.29, "🚪 locked door")
+        let door = this.add.text(this.w * 0.63, this.w * 0.29, "locked door")
             .setFontSize(this.s * 2)
             .setInteractive()
             .on('pointerover', () => {
@@ -46,7 +44,7 @@ class room1 extends AdventureScene {
                 if (this.hasItem("studentID")) {
                     this.loseItem("studentID");
                     this.showMessage("*squeak*");
-                    door.setText("🚪 unlocked door");
+                    door.setText("unlocked door");
                     this.gotoScene('co-op');
                 }
             })
@@ -59,14 +57,12 @@ class CoOp extends AdventureScene {
         super("co-op", "Time to begin your journey, but can you find the way forward?");
     }
     preload() {
-        this.load.audio('music', 'assets/Aeris.mp3');
-
+        this.load.image('co-op', 'assets/path.jpeg');
 
     }
     onEnter() {
-        this.sound.play('music', { loop: true });
-
-        this.add.text(this.w * 0.3, this.w * 0.4, "just go back")
+        this.add.image(0, 0, 'co-op').setOrigin(0).setDisplaySize(this.w * 0.75, this.h);
+        this.add.text(this.s, this.h - 3 * this.s, "just go back")
             .setFontSize(this.s * 2)
             .setInteractive()
             .on('pointerover', () => {
@@ -76,7 +72,8 @@ class CoOp extends AdventureScene {
                 this.gotoScene('room1');
             });
 
-        let wheel = this.add.text(this.w * 0.5, this.w * 0.5, "🔄 use the wheel")
+        let wheel = this.add.text(this.w * 0.375, this.h * 0.5, "wheel")
+            .setFontStyle('bold')
             .setInteractive()
             .setFontSize(this.s * 2)
             .on('pointerover', () => {
@@ -90,7 +87,8 @@ class CoOp extends AdventureScene {
                 this.gotoScene('wheel');
             });
             
-        this.add.text(this.w * 0.2, this.h * 0.48, "clay")
+        this.add.text(this.w * 0.1, this.h * 0.5, "clay")
+            .setFontStyle('bold')
             .setFontSize(this.s * 2)
             .setInteractive()
             .on('pointerover', () => {
@@ -100,8 +98,9 @@ class CoOp extends AdventureScene {
                 this.gotoScene('clayPiece');
             });
 
-        this.add.text(this.w * 0.6, this.h * 0.68, "tools")
-            .setFontSize(this.s * 1.5)
+        this.add.text(this.w * 0.58, this.h * 0.5, "tools")
+            .setFontSize(this.s * 2)
+            .setFontStyle('bold')
             .setInteractive()
             .on('pointerover', () => {
                 this.showMessage("These look like they could help me make a piece.");
@@ -131,19 +130,19 @@ class clayPiece extends AdventureScene {
         super("clayPiece", "Time to wedge this darn clay!");
     }
     preload () {
-        this.load.audio('music', 'assets/Aeris.mp3');
         this.load.image('clayPiece', 'assets/clay.jpeg');
     }
     onEnter () {
-        this.sound.play('music', { loop: true });
         this.add.image(0, 0, 'clayPiece').setOrigin(0).setDisplaySize(this.w * 0.75, this.h);
-        let clay = this.add.text(this.w * 0.4, this.w * 0.4, "wedge clay")
+        let clay = this.add.text(this.w * 0.3, this.w * 0.27, "wedge clay")
+            .setFontStyle('bold')
             .setInteractive()
             .setFontSize(this.s * 2)
             .on('pointerover', () => {
-                this.showMessage("You wedged the clay, it's ready to be used on the wheel.");
+                this.showMessage("You found the clay, it still needs to be wedged.");
             })
             .on('pointerdown', () => {
+                this.showMessage("You wedge the clay and it's ready to be used on the wheel.");
                 this.gainItem('clay');
                 this.tweens.add({
                     targets: clay,
@@ -154,7 +153,7 @@ class clayPiece extends AdventureScene {
                 });
             });
 
-        let back = this.add.text(this.w * 0.1, this.w * 0.1, "go back")
+        let back = this.add.text(this.s, this.h - 3 * this.s, "go back")
             .setInteractive()
             .setFontSize(this.s * 2)
             .on('pointerover', () => {
@@ -172,19 +171,19 @@ class tools extends AdventureScene {
         super("tools", "These tools look like they could be useful?");
     }
     preload () {
-        this.load.audio('music', 'assets/Aeris.mp3');
         this.load.image('tools', 'assets/tool.jpeg');
     }
     onEnter() {
-        this.sound.play('music', { loop: true });
         this.add.image(0, 0, 'tools').setOrigin(0).setDisplaySize(this.w * 0.75, this.h);
-        let toolsText = this.add.text(this.w * 0.4, this.w * 0.4, "pick up tools")
+        let toolsText = this.add.text(this.w * 0.3, this.w * 0.44, "pick up tools")
             .setInteractive()
             .setFontSize(this.s * 2)
+            .setFontStyle('bold')
             .on('pointerover', () => {
-                this.showMessage("You pick up the tools, maybe you can use them to make something on the wheel.");
+                this.showMessage("Maybe you can use them to make something on the wheel.");
             })
             .on('pointerdown', () => {
+                this.showMessage("Hopefully these are meant to be used on the wheel.");
                 this.gainItem('tools');
                 this.tweens.add({
                     targets: toolsText,
@@ -196,7 +195,7 @@ class tools extends AdventureScene {
             });
 
 
-        let back = this.add.text(this.w * 0.1, this.w * 0.1, "go back")
+        let back = this.add.text(this.s, this.h - 3 * this.s, "go back")
             .setInteractive()
             .setFontSize(this.s * 2)
             .on('pointerover', () => {
@@ -211,26 +210,37 @@ class tools extends AdventureScene {
 
 class wheel extends AdventureScene {
     constructor() {
-        super("wheel", "You made it to the wheel, but can you make something out of the clay?");
+        super("wheel", "Time to plop on the wheel and get busy! What will you make?");
     }
     preload () {
-        this.load.audio('music', 'assets/Aeris.mp3');
         this.load.image('wheel','assets/wheel.jpeg');
     }
     onEnter() {
-        this.sound.play('music', { loop: true });
         this.add.image(0, 0, 'wheel').setOrigin(0).setDisplaySize(this.w * 0.75, this.h);
-        let wheel = this.add.text(this.w * 0.5, this.w * 0.5, "🔄 the wheel")
+        let wheel = this.add.text(this.w * 0.3, this.w * 0.33, "wheel")
+            .setFontStyle('bold')
             .setInteractive()
             .setFontSize(this.s * 2)
+            .setFontStyle('bold')
             .on('pointerover', () => {
-                if (this.hasItem("clay") ) {
+                if (this.hasItem("clay") && this.hasItem("tools")) {
                     this.showMessage("You're all set to use the wheel.");
                 } else {
                     this.showMessage("I think you're missing something.");
                 }
+            })
+            .on('pointerdown', () => {
+                if (this.hasItem("clay") && this.hasItem("tools")) {
+                    this.loseItem("tools");
+                    this.loseItem("clay");
+                    this.gainItem("pottery");
+                    this.showMessage("You made some piece of pottery?");
+                    this.gotoScene('piece');
+                } else {
+                    this.showMessage("I think you're missing something.");
+                }
             });
-        let goBack = this.add.text(this.w * 0.3, this.w * 0.2, "go back")
+        let goBack = this.add.text(this.s, this.h - 3 * this.s, "go back")
             .setInteractive()
             .setFontSize(this.s * 2)
             .on('pointerover', () => {
@@ -238,6 +248,29 @@ class wheel extends AdventureScene {
             })
             .on('pointerdown', () => {
                 this.gotoScene('co-op');
+            });
+    }
+}
+
+class piece extends AdventureScene {
+    constructor() {
+        super("piece", "Congratulations! You made your own piece of pottery!");
+    }
+    preload () {
+        this.load.image('piece','assets/piece.jpeg');
+    }
+    onEnter() {
+        this.add.image(0, 0, 'piece').setOrigin(0).setDisplaySize(this.w * 0.75, this.h);
+            let finish = this.add.text(this.w * 0.3, this.w * 0.4, '(Submit piece)')
+            .setInteractive()
+            .setFontSize(this.s * 2)
+            .setFontStyle('bold')
+            .on('pointerover', () => {
+                this.showMessage("Submit your piece of pottery.");
+            })
+            .on('pointerdown', () => {
+                this.loseItem("pottery");
+                this.gotoScene('outro');
             });
     }
 }
@@ -267,9 +300,14 @@ class Outro extends Phaser.Scene {
     constructor() {
         super('outro');
     }
+    preload() {
+        this.load.image('outro', 'assets/end.JPEG');
+    }
     create() {
-        this.add.text(50, 50, "That's all!").setFontSize(50);
-        this.add.text(50, 100, "Click anywhere to restart.").setFontSize(20);
+        const w = this.sys.game.config.width;
+        const h = this.sys.game.config.height;
+        this.add.image(0, 0, 'outro').setOrigin(0).setDisplaySize(w, h);
+        this.add.text(w * 0.375, h * 0.08, "Your piece is now added to the many offerings").setFontSize(50).setOrigin(0.5, 0);
         this.input.on('pointerdown', () => this.scene.start('intro'));
     }
 }
@@ -282,7 +320,7 @@ const game = new Phaser.Game({
         width: 1920,
         height: 1080
     },
-    scene: [Intro, room1, CoOp, tools, wheel, clayPiece, Outro],
+    scene: [Intro, room1, CoOp, clayPiece, tools, wheel, piece, Outro],
     title: "Adventure Game",
 });
 
