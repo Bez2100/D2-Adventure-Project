@@ -171,7 +171,7 @@ class tools extends AdventureScene {
         super("tools", "These tools look like they could be useful?");
     }
     preload () {
-        this.load.image('tools', 'assets/tool.jpeg');
+        this.load.image('tools', 'assets/tool.JPEG');
     }
     onEnter() {
         this.add.image(0, 0, 'tools').setOrigin(0).setDisplaySize(this.w * 0.75, this.h);
